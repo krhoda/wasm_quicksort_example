@@ -1,25 +1,61 @@
 mod utils;
+// use js_sys::Error;
+use serde::{Deserialize, Serialize};
+use serde_json::{from_str, to_string, Value};
 
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::future_to_promise;
+
+// #[wasm_bindgen]
+// extern "C" {
+//     fn alert(s: &str);
+// }
+
+// #[wasm_bindgen]
+// pub fn greet() {
+//     alert("Hello, example-wasm-lib!");
+// }
 
 #[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
+pub fn quicksort(vec: String) -> Result<JsValue, JsValue> {
+    let vec: Sortable = from_str(&vec).map_err(|e| Err(JsValue::from(format!("{}", e))))?;
+    let res = to_string(&vec.sorted()).map_err(|e| Err(JsValue::from(format!("{}", e))))?;
+    Ok(res.into())
 }
 
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, example-wasm-lib!");
+// The type that will face the JS user
+#[derive(Clone, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum Sortable {
+    Strings(Vec<String>),
+    Numbers(Vec<f64>),
 }
 
-// The next two functions are a rough re-implementation of:
+impl Sortable {
+    fn sorted(&self) -> Self {
+        let s = self.clone();
+        match s {
+            Sortable::Strings(mut v) => {
+                quicksort(&mut v);
+                Sortable::Strings(v)
+            }
+            Sortable::Numbers(mut v) => {
+                quicksort(&mut v);
+                Sortable::Numbers(v)
+            }
+        }
+    }
+}
+
+// The next three functions are a tiny modification of:
 // https://www.hackertouch.com/quick-sort-in-rust.html
-fn quicksort<T: Eq + PartialEq + PartialOrd>(arr: &mut [T]) {
+
+fn quicksort<T: PartialEq + PartialOrd>(arr: &mut [T]) {
     let len = arr.len();
     _quicksort(arr, 0, (len - 1) as isize);
 }
 
-fn _quicksort<T: Eq + PartialEq + PartialOrd>(arr: &mut [T], low: isize, high: isize) {
+fn _quicksort<T: PartialEq + PartialOrd>(arr: &mut [T], low: isize, high: isize) {
     if low < high {
         let p = partition(arr, low, high);
         _quicksort(arr, low, p - 1);
@@ -27,7 +63,7 @@ fn _quicksort<T: Eq + PartialEq + PartialOrd>(arr: &mut [T], low: isize, high: i
     }
 }
 
-fn partition<T: Eq + PartialEq + PartialOrd>(arr: &mut [T], low: isize, high: isize) -> isize {
+fn partition<T: PartialEq + PartialOrd>(arr: &mut [T], low: isize, high: isize) -> isize {
     let pivot = high as usize;
     let mut store_index = low - 1;
     let mut last_index = high;
