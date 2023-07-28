@@ -1,29 +1,13 @@
 mod utils;
-// use js_sys::Error;
+
 use serde::{Deserialize, Serialize};
-use serde_json::{from_str, to_string, Value};
-
+use serde_json::{from_str, to_string};
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::future_to_promise;
 
-// #[wasm_bindgen]
-// extern "C" {
-//     fn alert(s: &str);
-// }
+// This section is glue between JS and Rust:
 
-// #[wasm_bindgen]
-// pub fn greet() {
-//     alert("Hello, example-wasm-lib!");
-// }
-
-#[wasm_bindgen]
-pub fn quicksort(vec: String) -> Result<JsValue, JsValue> {
-    let vec: Sortable = from_str(&vec).map_err(|e| Err(JsValue::from(format!("{}", e))))?;
-    let res = to_string(&vec.sorted()).map_err(|e| Err(JsValue::from(format!("{}", e))))?;
-    Ok(res.into())
-}
-
-// The type that will face the JS user
+// This will be the type targetted by our code
+// when unmarshalling from JSON.
 #[derive(Clone, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Sortable {
@@ -31,26 +15,34 @@ pub enum Sortable {
     Numbers(Vec<f64>),
 }
 
-impl Sortable {
-    fn sorted(&self) -> Self {
-        let s = self.clone();
-        match s {
-            Sortable::Strings(mut v) => {
-                quicksort(&mut v);
-                Sortable::Strings(v)
-            }
-            Sortable::Numbers(mut v) => {
-                quicksort(&mut v);
-                Sortable::Numbers(v)
-            }
+// This will treat the destination type (Sortable) generically.
+fn quicksort_interface(s: Sortable) -> Sortable {
+    match s {
+        Sortable::Strings(mut v) => {
+            qsort(&mut v);
+            Sortable::Strings(v)
+        }
+        Sortable::Numbers(mut v) => {
+            qsort(&mut v);
+            Sortable::Numbers(v)
         }
     }
 }
 
-// The next three functions are a tiny modification of:
-// https://www.hackertouch.com/quick-sort-in-rust.html
+// This is the only thing exposed to the consuming libraries.
+// The argument "vec" is a JSON stringified array of either Strings or Numbers, homogenously.
+#[wasm_bindgen]
+pub fn quicksort(vec: String) -> Result<JsValue, JsError> {
+    let vec: Sortable = from_str(&vec).map_err(|e| JsError::new(&format!("{}", e)))?;
+    let res = to_string(&quicksort_interface(vec)).map_err(|e| JsError::new(&format!("{}", e)))?;
+    Ok(res.into())
+}
 
-fn quicksort<T: PartialEq + PartialOrd>(arr: &mut [T]) {
+// This section is the actual implementation in Rust terms.
+
+// The next three functions are a tiny modification to the implementation found here:
+// https://www.hackertouch.com/quick-sort-in-rust.html
+fn qsort<T: PartialEq + PartialOrd>(arr: &mut [T]) {
     let len = arr.len();
     _quicksort(arr, 0, (len - 1) as isize);
 }
@@ -127,9 +119,9 @@ mod tests {
         assert_ne!(&expected, &unsort2);
         assert_ne!(&expected, &unsort3);
 
-        quicksort(&mut unsort1);
-        quicksort(&mut unsort2);
-        quicksort(&mut unsort3);
+        qsort(&mut unsort1);
+        qsort(&mut unsort2);
+        qsort(&mut unsort3);
 
         assert_eq!(&expected, &unsort1);
         assert_eq!(&expected, &unsort2);
@@ -144,8 +136,8 @@ mod tests {
         assert_ne!(&expected, &unsort1);
         assert_ne!(&expected, &unsort2);
 
-        quicksort(&mut unsort1);
-        quicksort(&mut unsort2);
+        qsort(&mut unsort1);
+        qsort(&mut unsort2);
 
         assert_eq!(&expected, &unsort1);
         assert_eq!(&expected, &unsort2);
