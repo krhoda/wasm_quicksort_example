@@ -1,0 +1,14 @@
+{
+  "name": "node_example",
+  "version": "0.0.1",
+  "description": "node executable that calls the wasm_quicksort_example",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wasm_quicksort_example": "^0.0.1"
+  }
+}
