@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Robust WASM Pacakging example</title>
+    <title>Robust WASM Packaging example</title>
     <!-- <link rel="stylesheet" href="./style.css"> -->
     <!-- <link rel="icon" href="./favicon.ico" type="image/x-icon"> -->
   </head>
@@ -12,6 +12,17 @@
     <main>
         <h1>WASM in a script tag</h1>
     </main>
-	<!-- TODO: Add <script> here!-->
+    <script src="https://cdn.jsdelivr.net/npm/wasm_quicksort_example@0.0.1/dist/umd/index.js"></script>
+	  <script defer>
+		try {
+		  let v = [3, 2, 1];
+		  wasm_quicksort_example.Sorter.initialize().then((sorter) => {
+			let n = sorter.sort(v);
+			alert(`Sorted array:${JSON.stringify(n)}`);
+		  })
+		} catch (e) {
+		  console.error(e);
+		}
+	  </script>
   </body>
 </html>

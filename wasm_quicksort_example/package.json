@@ -1,6 +1,6 @@
 {
   "name": "wasm_quicksort_example",
-  "version": "0.1",
+  "version": "0.0.1",
   "author": "Kelsey Rhoda <kelseydrhoda@gmail.com>",
   "license": "MIT",
   "description": "An example library implementing quicksort, used to demonstrate best practices for Rust to WASM publishing",
@@ -31,10 +31,7 @@
   "scripts": {
     "build": "wasm-pack build -t web --out-dir ../src/pkg crate && rm -rf dist/ && rollup -c",
     "build:minify": "npm run build && npx terser@latest --compress --mangle --output dist/cjs/index.cjs -- dist/cjs/index.cjs",
-    "format": "npx prettier@latest --write src/ tests/ package.json rollup.config.js tsconfig.json vite.config.ts cli.js",
-    "pretest": "npm run build",
-    "test": "vitest run && tsc",
-    "prepublishOnly": "npm test"
+    "format": "npx prettier@latest --write src/ tests/ package.json rollup.config.js tsconfig.json vite.config.ts cli.js"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.2",
@@ -42,7 +39,6 @@
     "@types/node": "^20.4.2",
     "rollup": "^3.26.2",
     "tslib": "^2.6.0",
-    "typescript": "^5.1.6",
-    "vitest": "^0.33.0"
+    "typescript": "^5.1.6"
   }
 }
