@@ -59,8 +59,8 @@ const rolls = (fmt, env) => ({
         // on the rust code
         fs.mkdirSync(`./dist/types/pkg`, { recursive: true });
         fs.copyFileSync(
-          path.resolve("./src/pkg/wasm_quicksort_example_js.d.ts"),
-          path.resolve(`./dist/types/pkg/wasm_quicksort_example_js.d.ts`)
+          path.resolve("./src/pkg/wasm_quicksort_example.d.ts"),
+          path.resolve(`./dist/types/pkg/wasm_quicksort_example.d.ts`)
         );
       },
     },
