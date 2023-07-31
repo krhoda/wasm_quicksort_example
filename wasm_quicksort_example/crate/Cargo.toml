@@ -3,6 +3,9 @@ name = "wasm-quicksort-example"
 version = "0.1.0"
 authors = ["K <kelseydrhoda@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/krhoda/wasm_quicksort_example/"
+description = "An example repository showing how to create well-typed, highly portable WASM libraries using a narrow, opinionated approach to project structure"
+license = "MIT OR Apache-2.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
