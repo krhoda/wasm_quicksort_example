@@ -1,9 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-*/
-export function greet(): void;
-/**
 * @param {string} vec
 * @returns {any}
 */
@@ -21,7 +18,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly mergesort: (a: number, b: number, c: number) => void;
-  readonly greet: () => void;
   readonly quicksort: (a: number, b: number, c: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_malloc: (a: number, b: number) => number;

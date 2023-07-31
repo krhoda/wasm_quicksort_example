@@ -189,9 +189,6 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbg_alert_1ecb31ae64570f04 = function(arg0, arg1) {
-        alert(getStringFromWasm0(arg0, arg1));
-    };
     imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
         const ret = getStringFromWasm0(arg0, arg1);
         return addHeapObject(ret);
@@ -263,6 +260,52 @@ Sorter.initialize = async (options) => {
     await initialized;
     return new Sorter();
 };
+
+function _loadWasmModule (sync, filepath, src, imports) {
+  function _instantiateOrCompile(source, imports, stream) {
+    var instantiateFunc = stream ? WebAssembly.instantiateStreaming : WebAssembly.instantiate;
+    var compileFunc = stream ? WebAssembly.compileStreaming : WebAssembly.compile;
+
+    if (imports) {
+      return instantiateFunc(source, imports)
+    } else {
+      return compileFunc(source)
+    }
+  }
+
+  
+var buf = null;
+if (filepath) {
+  
+var fs = require("fs");
+var path = require("path");
+
+return new Promise((resolve, reject) => {
+  fs.readFile(path.resolve(__dirname, filepath), (error, buffer) => {
+    if (error != null) {
+      reject(error);
+    } else {
+      resolve(_instantiateOrCompile(buffer, imports, false));
+    }
+  });
+});
+
+}
+
+
+buf = Buffer.from(src, 'base64');
+
+
+
+  if(sync) {
+    var mod = new WebAssembly.Module(buf);
+    return imports ? new WebAssembly.Instance(mod, imports) : mod
+  } else {
+    return _instantiateOrCompile(buf, imports, false)
+  }
+}
+
+function wasm_mergesort_example_wasm(imports){return _loadWasmModule(0, '../wasm_mergesort_example_bg.wasm', null, imports)}
 
 // @ts-ignore
 setWasmInit(() => wasm_mergesort_example_wasm());
