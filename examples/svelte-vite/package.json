@@ -14,6 +14,6 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "wasm_quicksort_example": "0.0.1"
+    "wasm_quicksort_example": "0.0.2"
   }
 }

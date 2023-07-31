@@ -1,9 +1,9 @@
-import init, {InitInput, quicksort} from "./pkg/wasm_quicksort_example.js";
+import init, {InitInput, quicksort, mergesort} from "./pkg/wasm_mergesort_example.js";
 
 // There is some weirdness around re-exporting types using rollup, see:
 // https://github.com/rollup/plugins/issues/71
 // This was the cleanest way to re-export a type that I have found:
-export type Sortable = import("./pkg/wasm_quicksort_example.js").Sortable;
+export type Sortable = import("./pkg/wasm_mergesort_example.js").Sortable;
 
 export type LoadOpts =  {
 	wasm?: InitInput
@@ -30,9 +30,16 @@ export class Sorter {
 		return new Sorter();
 	}
 
-	public sort = (sortable: Sortable): Sortable => {
+	public quicksort = (sortable: Sortable): Sortable => {
 		let s = JSON.stringify(sortable);
 		s = quicksort(s);
 		return JSON.parse(s) as Sortable;
 	}
+
+	public mergesort = (sortable: Sortable): Sortable => {
+		let s = JSON.stringify(sortable);
+		s = mergesort(s);
+		return JSON.parse(s) as Sortable;
+	}
+
 }

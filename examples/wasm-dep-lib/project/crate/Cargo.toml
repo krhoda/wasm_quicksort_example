@@ -1,8 +1,11 @@
 [package]
-name = "wasm-dep-lib"
-version = "0.1.0"
+name = "wasm-mergesort-example"
+version = "0.0.1"
 authors = ["K <kelseydrhoda@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/krhoda/wasm_quicksort_example/"
+description = "An example repository showing how to create well-typed, highly portable WASM libraries using a narrow, opinionated approach to project structure"
+license = "MIT OR Apache-2.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -11,8 +14,11 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
+serde = {version = "1", features = ["derive"]}
+serde_json = "1"
+tsify = "0.4.5"
 wasm-bindgen = "0.2.84"
-wasm-quicksort-example = { path = "../../wasm_quicksort_example/crate" }
+wasm-quicksort-example = "0.0.1"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

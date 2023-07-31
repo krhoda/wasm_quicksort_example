@@ -1,0 +1,7 @@
+# WASM Library Packaging example
+
+This repository aims to be a collection of documented best practices for developing WASM libraries in Rust and publishing them for the JavaScript eco-system. It is heavily influenced by these [two](https://nickb.dev/blog/results-of-authoring-a-js-library-with-rust-and-wasm/) [articles](https://nickb.dev/blog/recommendations-when-publishing-a-wasm-library/) and [this repo](https://github.com/nickbabcock/jomini/), all by the same author (Nick Babcock). This library is a simple quicksort implementation, allowing for a simple codebase to not distract from the complex build system that this repo is meant to demonstrate.
+
+This directory is the actual JavaScript / Rust libraries used by the projects `../examples` directory. The Rust library is found in the `crate` directory. The JavaScript is found in the `src` directory. The Rust can be published on it's own to `crates.io` and imported by other WASM facing Rust libraries. The `package.json`'s build directions combine the `src` and `crate` into various distrobutions for all sorts of targets, some of which are found in `../examples`.
+
+The important trio of config files are the `package.json`, the `tsconfig.json`, and the `rollup.config.js`. The `rollup.config.js` sets up all the various distrobutions, the `tsconfig.json` allows for the importation of the `.wasm` files directly, amongst other things, and the `package.json` sets the build system up.
