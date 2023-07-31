@@ -2,15 +2,16 @@ mod utils;
 
 use serde::{Deserialize, Serialize};
 use serde_json::{from_str, to_string};
-use ts_rs::TS;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 // This section is glue between JS and Rust:
 
-// This will be the type targetted by our code
-// when unmarshalling from JSON.
-#[derive(Clone, Deserialize, Serialize, TS)]
-#[ts(export)]
+// This will be the shared type between JS and Rust.
+// This is the type that JSON will be deserailized into on the Rust side.
+// It will also generate a Typescript type exposed by the JS libraries.
+#[derive(Clone, Deserialize, Serialize, Tsify)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 #[serde(untagged)]
 pub enum Sortable {
     Strings(Vec<String>),
@@ -31,8 +32,10 @@ fn quicksort_interface(s: Sortable) -> Sortable {
     }
 }
 
-// This is the only thing exposed to the consuming libraries.
-// The argument "vec" is a JSON stringified array of either Strings or Numbers, homogenously.
+// Other than Sortable's type definition, this is the only thing exposed
+// to the consuming libraries.
+// The lack of typing at the argument level is hidden behind the better
+// typing of the JavaScript wrapper -- see quicksort_wrapper.ts
 #[wasm_bindgen]
 pub fn quicksort(vec: String) -> Result<JsValue, JsError> {
     let vec: Sortable = from_str(&vec).map_err(|e| JsError::new(&format!("{}", e)))?;

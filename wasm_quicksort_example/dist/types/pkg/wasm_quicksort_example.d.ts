@@ -5,6 +5,8 @@
 * @returns {any}
 */
 export function quicksort(vec: string): any;
+export type Sortable = string[] | number[];
+
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
