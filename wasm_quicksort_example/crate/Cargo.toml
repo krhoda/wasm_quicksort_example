@@ -1,6 +1,6 @@
 [package]
 name = "wasm-quicksort-example"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["K <kelseydrhoda@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/krhoda/wasm_quicksort_example/"
