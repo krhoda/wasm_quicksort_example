@@ -2,13 +2,15 @@ mod utils;
 
 use serde::{Deserialize, Serialize};
 use serde_json::{from_str, to_string};
+use ts_rs::TS;
 use wasm_bindgen::prelude::*;
 
 // This section is glue between JS and Rust:
 
 // This will be the type targetted by our code
 // when unmarshalling from JSON.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, TS)]
+#[ts(export)]
 #[serde(untagged)]
 pub enum Sortable {
     Strings(Vec<String>),
