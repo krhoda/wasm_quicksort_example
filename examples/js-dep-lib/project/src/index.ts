@@ -1,6 +1,23 @@
-export * from "./index_core.js";
-import wasm_mergesort_example_wasm from "./pkg/wasm_mergesort_example_bg.wasm";
-import {setWasmInit} from "./mergesort_wrapper.js"
+export type Sortable = import("./index_core.js").Sortable;
+export type LoadOpts = import("./index_core.js").LoadOpts;
+import {mergesort} from "./index_core.js";
+import {Sorter as WASMSorter} from "wasm_quicksort_example";
 
-// @ts-ignore
-setWasmInit(() => wasm_mergesort_example_wasm());
+export class Sorter {
+	private wSorter: WASMSorter;
+
+	private constructor(wSorter: WASMSorter) {
+		this.wSorter = wSorter;
+	}
+
+	public static initialize = async (loadOpts?: LoadOpts): Promise<Sorter> => {
+		let wSorter = await WASMSorter.initialize(loadOpts);
+		return new Sorter(wSorter);
+	}
+
+	public mergesort = mergesort;
+
+	public quicksort = (sortable: Sortable): Sortable => {
+		return this.wSorter.sort(sortable);
+	}
+}

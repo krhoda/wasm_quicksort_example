@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { Sorter } from "wasm_mergesort_example";
+import { Sorter } from "js_example";
 import * as React from "react";
+
 export default function Home() {
   let client1 = [3, 2, 1];
   let server1 = [9, 8, 7];
@@ -18,8 +19,11 @@ export default function Home() {
     });
   }, []);
 
-  // Server-side
-  Sorter.initialize().then((sorter) => {
+  // Server-side:
+  // This required fetching it remotely to work, for some reason.
+  // Otherwise, it complained of "not found"
+  let wasmUrl = "https://cdn.jsdelivr.net/npm/wasm_quicksort_example@0.0.2/dist/wasm_quicksort_example_bg.wasm";
+  Sorter.initialize({wasm: wasmUrl}).then((sorter) => {
     let sres1 = sorter.quicksort(server1);
     console.log(`Quick sorted array: ${JSON.stringify(sres1)}`);
     let sres2 = sorter.mergesort(server2);

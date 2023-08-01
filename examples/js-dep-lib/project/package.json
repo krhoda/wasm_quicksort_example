@@ -1,9 +1,9 @@
 {
   "name": "js_wasm_rexport_example",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "author": "Kelsey Rhoda <kelseydrhoda@gmail.com>",
   "license": "MIT",
-  "description": "An example library re-exporting a WASM based library for purposes of example.",
+  "description": "An example library re-exporting a WASM based library.",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/umd/index.js",
@@ -38,6 +38,7 @@
     "@types/node": "^20.4.2",
     "rollup": "^3.26.2",
     "tslib": "^2.6.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+	"wasm_quicksort_example": "^0.0.2"
   }
 }

@@ -1,6 +1,5 @@
 // NOTE: This came from the repo, with only slight modifications: https://github.com/nickbabcock/jomini
 // NOTE: Comments are the above author's but preserved for their usefulness.
-
 import typescript from "@rollup/plugin-typescript";
 import { wasm } from "@rollup/plugin-wasm";
 import path from "path";
@@ -21,7 +20,7 @@ const rolls = (fmt, env) => ({
     format: fmt,
     entryFileNames:
       outdir(fmt, env) + `/[name].` + (fmt === "cjs" ? "cjs" : "js"),
-    name: "wasm_mergesort_example",
+    name: "js_wasm_rexport_example",
   },
   plugins: [
     // We want to inline our wasm bundle as base64. Not needing browser users
@@ -53,16 +52,7 @@ const rolls = (fmt, env) => ({
       // at all, or forcing them to deal with bundling, we resolve the import to
       // an empty string. This will error at runtime.
       resolveImportMeta: () => `""`,
-      generateBundle() {
-        // copy the typescript definitions that wasm-bindgen creates into the
-        // distribution so that downstream users can benefit from documentation
-        // on the rust code
-        fs.mkdirSync(`./dist/types/pkg`, { recursive: true });
-        fs.copyFileSync(
-          path.resolve("./src/pkg/wasm_mergesort_example.d.ts"),
-          path.resolve(`./dist/types/pkg/wasm_mergesort_example.d.ts`)
-        );
-      },
+      generateBundle() {},
     },
   ],
 });
