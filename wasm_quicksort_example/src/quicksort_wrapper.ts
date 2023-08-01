@@ -19,7 +19,7 @@ let initialized: Promise<void> | undefined = undefined;
 export class Sorter {
 	private constructor() {}
 
-	public static initialize = async (options?: LoadOpts) => {
+	public static initialize = async (options?: LoadOpts): Promise<Sorter> => {
 		if (initialized === undefined) {
 			//@ts-ignore
 			const loadModule = options?.wasm ?? wasmInit();
