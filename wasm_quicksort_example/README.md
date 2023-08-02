@@ -1,7 +1,7 @@
 # WASM Library Packaging Example -- The JS Lib
-This directory is the actual JavaScript / Rust libraries used by the projects `../examples` directory. The Rust library is found in the `crate` directory. The JavaScript is found in the `src` directory. The Rust can be published on it's own to `crates.io` and imported by other WASM facing Rust libraries. The `package.json`'s build directions combine the `src` and `crate` into various distrobutions for all sorts of targets, some of which are found in `../examples`.
+This directory is the actual JavaScript / Rust libraries used by the projects `../examples` directory. The Rust library is found in the `crate` directory. The JavaScript is found in the `src` directory. The Rust can be published on it's own to `crates.io` and imported by other WASM facing Rust libraries. The `package.json`'s build directions combine the `src` and `crate` into various distributions for all sorts of targets, some of which are found in `../examples`.
 
-The important trio of config files are the `package.json`, the `tsconfig.json`, and the `rollup.config.js`. The `rollup.config.js` sets up all the various distrobutions, the `tsconfig.json` allows for the importation of the `.wasm` files directly, amongst other things, and the `package.json` sets the build system up.
+The important trio of config files are the `package.json`, the `tsconfig.json`, and the `rollup.config.js`. The `rollup.config.js` sets up all the various distributions, the `tsconfig.json` allows for the importation of the `.wasm` files directly, amongst other things, and the `package.json` sets the build system up.
 
 In terms of re-creating this project, here are the steps that were used to create this.
 
